@@ -46,7 +46,7 @@ class OperationsImplTest {
     @Test
     void findTrans() {
         Transaction found = operations.findTrans(3);
-        assertNull(found);
+        assertNotNull(found);
         assertEquals(3,found.getNumber());
         Transaction notFound = operations.findTrans(111);
 

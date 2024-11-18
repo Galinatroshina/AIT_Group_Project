@@ -9,12 +9,11 @@ import java.util.List;
 
 public class OperationsImpl implements Operations {
 
-    List<Transaction> transaction;
+    List<Transaction> transactions;
 
-    public OperationsImpl(List<Transaction> transaction) {
-        this.transaction = transaction;
+    public OperationsImpl(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
-
 
     @Override
     public void mainMenu() {
@@ -23,22 +22,40 @@ public class OperationsImpl implements Operations {
 
     @Override
     public Transaction addTrans(int num) {
-        return null;
+        // Создаём транзакцию, добавляем её в список
+        Transaction newTransaction = new Transaction(num, "USD", true, LocalDate.now(), 100.0, 5.0);
+        transactions.add(newTransaction);
+        return newTransaction;
     }
 
     @Override
     public boolean removeTrans(int num) {
-        return false;
+        // Ищем транзакцию по номеру и удаляем
+        return transactions.removeIf(transaction -> transaction.getNumber() == num);
     }
 
     @Override
     public Transaction findTrans(int num) {
-        return null;
+        // Возвращаем транзакцию по номеру
+        for (Transaction transaction : transactions) {
+            if (transaction.getNumber() == num) {
+                return transaction;
+            }
+        }
+        return null; // Если не найдена
     }
 
     @Override
     public List<Transaction> findTransByDate(LocalDate dateFrom, LocalDate dateTo) {
-        return List.of();
+        List<Transaction> result = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            LocalDate date = transaction.getDate();
+            if ((date.isEqual(dateFrom) || date.isAfter(dateFrom)) &&
+                    (date.isEqual(dateTo) || date.isBefore(dateTo))) {
+                result.add(transaction);
+            }
+        }
+        return result;
     }
 
     @Override
